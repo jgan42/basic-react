@@ -4,14 +4,20 @@ const api = {
     endPoint: 'http://dataservice.accuweather.com/',
     autoComplete: 'locations/v1/cities/autocomplete',
     forecast: 'forecasts/v1/daily/1day/',
-    key: 'GCv2160FdQea0WUuYnvrKUZz2uvFKra0',
-    key2: 'kCGrRnaVCn6rTUgGeoc6NbWKeTmPXMAr',
+    keys: [
+        'GCv2160FdQea0WUuYnvrKUZz2uvFKra0',
+        'kCGrRnaVCn6rTUgGeoc6NbWKeTmPXMAr',
+        '8jyukTHdw9km7phkPn6e60XQHyfTf88U',
+    ],
 };
 
 class WeatherService {
 
-    getWeather(cityCode, fallbackKey = false) {
-        const key = fallbackKey ? api.key2 : api.key;
+    getWeather(cityCode, fallbackKey = 0) {
+        const key = api.keys[fallbackKey];
+        if (!key) {
+            return Promise.reject('No more keys...');
+        }
 
         return axios.get(`${api.endPoint + api.forecast + cityCode}?apikey=${key}&metric=true`)
             .then(res => {
@@ -20,7 +26,7 @@ class WeatherService {
                 }
                 return this.formatWeatherData(res.data.DailyForecasts[0]);
             })
-            .catch(error => this.getWeather(cityCode, true))
+            .catch(error => this.getWeather(cityCode, fallbackKey + 1))
             .catch(error => ({
                 icon: `https://developer.accuweather.com/sites/default/files/31-s.png`,
                 text: 'expired key..',
@@ -28,8 +34,11 @@ class WeatherService {
             }));
     }
 
-    searchCity(input, fallbackKey = false) {
-        const key = fallbackKey ? api.key2 : api.key;
+    searchCity(input, fallbackKey = 0) {
+        const key = api.keys[fallbackKey];
+        if (!key) {
+            return Promise.reject('No more keys...');
+        }
 
         return axios.get(`${api.endPoint + api.autoComplete}?apikey=${key}&q=${input}`)
             .then(res => {
@@ -38,10 +47,10 @@ class WeatherService {
                 }
                 return res.data.map(city => ({
                     name: city.LocalizedName,
-                    code: city.Key
+                    code: city.Key,
                 })).slice(0, 10);
             })
-            .catch(error => this.searchCity(input, true))
+            .catch(error => this.searchCity(input, fallbackKey + 1))
     }
 
     formatWeatherData(data) {

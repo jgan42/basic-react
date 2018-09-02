@@ -7,7 +7,7 @@ class NewCityInput extends Component {
     constructor() {
         super();
         this.state = {
-            completion: [{name: 'Paris', code: 623}],
+            completion: [],
         };
     }
 
@@ -15,7 +15,6 @@ class NewCityInput extends Component {
         if (input.length > 2) {
             WeatherService.searchCity(input)
                 .then(data => {
-                    console.log('data', data);
                     this.state.completion = data;
                     this.setState(this.state)
                 })
