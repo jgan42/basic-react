@@ -1,0 +1,21 @@
+.weather-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    max-width: 800px;
+    margin: 5px auto;
+    padding: 10px;
+    background-color: lightblue;
+}
+
+.weather-text {
+    width: 40%;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}

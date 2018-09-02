@@ -1,0 +1,32 @@
+.new-city-input {
+    position: relative;
+    width: 400px;
+    max-width: 100%;
+    margin: auto;
+}
+
+.new-city-input input {
+    width: calc(100% - 13px);
+    height: 1.5rem;
+    padding: 5px;
+}
+
+.auto-complete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background: white;
+}
+
+.auto-complete > div {
+    border: 1px solid lightgray;
+    text-align: left;
+    padding: 5px;
+}
+
+.auto-complete > div:hover {
+    background-color: #0007;
+    cursor: pointer;
+}
