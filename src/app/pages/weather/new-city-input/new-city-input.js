@@ -33,7 +33,8 @@ class NewCityInput extends Component {
                 <input
                     type="text"
                     onFocus={e => e.target.value = ''}
-                    onChange={e => this.autoComplete(e.target.value)}/>
+                    onChange={e => this.autoComplete(e.target.value)}
+                    placeholder="Add a new city to the list ..."/>
                 <div className="auto-complete">
                     {
                         this.state.completion.map((city, i) =>
